@@ -13,17 +13,18 @@ class NimController:
 
         self.num_piles = rnd.randint(2, 5)
         valid_piles = {}
-        j=0
+        j = 0
         # create a list of the piles and distribute one item to each pile
 
         for i in range(0, self.num_piles):
-            pile_name = string.ascii_uppercase[i%26]
+            pile_name = string.ascii_uppercase[i % 26]
             if i >= 26:
-                pile_name=string.ascii_uppercase[j]+string.ascii_uppercase[i%26]
-                
+                pile_name = string.ascii_uppercase[j] + \
+                    string.ascii_uppercase[i % 26]
+
             if i % 26 == 0 and i > 26:
-                j+=1
-            
+                j += 1
+
             valid_piles.update({pile_name: 1})
 
         # since we have already distributed one to each pile, we set the distributed var equal to that amount
@@ -40,7 +41,7 @@ class NimController:
         # j=0
         # for i in range(0, self.num_piles):
         #     pile_name = string.ascii_uppercase[i%26]
-            
+
         #     if i >= 26:
         #         pile_name=string.ascii_uppercase[j]+string.ascii_uppercase[i%26]
         #     if i % 26 == 0:
@@ -50,7 +51,6 @@ class NimController:
 
     # utility functions used by the gui
 
-    
     def get_pile_dict(self):
         self.nim.index_piles_by_name()
         return self.nim.i_piles
@@ -63,6 +63,5 @@ class NimController:
         move = self.nim.i_piles[pile_name].remove_items(remove_num)
         if self.nim.is_game_over():
             self.nim.winner = "Computer" if self.nim.misere else "You"
-            
+
         return "You "+move
- 

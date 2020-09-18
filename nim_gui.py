@@ -1,9 +1,10 @@
 from tkinter import *
 from tkinter import ttk
-
 from nim_controller import NimController
 
 FONT = "Helvetica"
+
+
 class NimGui:
     def __init__(self, master):
         self.frame = master
@@ -42,7 +43,8 @@ class NimGui:
             self.frame, text="Make computer move", command=self.make_computer_move, width=20)
 
         # Integer input corresponding to the number of items to be removed from the selected pile
-        self.num_input =ttk.Combobox(self.frame, textvariable=self.remove_num, width=20)
+        self.num_input = ttk.Combobox(
+            self.frame, textvariable=self.remove_num, width=20)
         # num_input = Spinbox(
         #     self.frame, textvariable=self.remove_num, from_=1, to=10, width=20)
 
@@ -61,7 +63,7 @@ class NimGui:
         self.comp_text_label.place(x=10, y=65)
         self.computer_move_button.place(x=10, y=100)
         self.user_move_button.place(x=10, y=125)
-        self.num_input.place(x=10,y=150)
+        self.num_input.place(x=10, y=150)
 
         self.piles_label.place(x=200, y=175)
         self.info_label.place(x=200, y=125)
@@ -73,18 +75,17 @@ class NimGui:
             self.pile_buttons = []
 
         piles_dict = self.nim_ctrl.get_pile_dict()
-        x=25
-        y=200
+        x = 25
+        y = 200
         for pile_name in piles_dict.keys():
             btn = Radiobutton(self.frame, text=pile_name,
                               variable=self.selected_pile, value=pile_name)
             self.pile_buttons.append(btn)
             if y > 800:
-                x+=60
-                y=200
+                x += 60
+                y = 200
             btn.place(x=x, y=y)
-            y+=25
-
+            y += 25
 
     def disable_buttons(self):
         self.user_move_button["state"] = "disabled"
@@ -133,7 +134,6 @@ class NimGui:
         self.set_num_input()
         self.check_game_over()
 
-
     def make_move(self):
         try:
             move_info = self.nim_ctrl.make_move(
@@ -144,15 +144,6 @@ class NimGui:
             self.computer_move_button["state"] = "normal"
             self.set_num_input()
             self.check_game_over()
-            
-
 
         except ValueError:
             self.move_text.set("Invalid move")
-
-
-
-main = Tk()
-main.geometry("1600x1600")
-c = NimGui(main)
-main.mainloop()

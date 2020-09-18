@@ -9,12 +9,12 @@ class Pile:
 
     def add_items(self, num_items):
         for i in range(0, num_items):
-            self.size+=1
+            self.size += 1
 
     def remove_items(self, num_items):
         if(num_items <= self.size):
             for i in range(0, num_items):
-                self.size-=1
+                self.size -= 1
             plural = 's' if num_items > 1 else ''
             return(f"removed {num_items} item{plural} from pile {self.name}")
         else:
@@ -40,31 +40,31 @@ class Nim:
     def make_pile(self, name, num_items):
         self.piles.append(Pile(name, num_items))
 
-
     # create and return a string to represent each pile and its corresponding items
+
     def view_piles(self):
         to_string = ''
         max_size = self.get_max_pile_size()
         pile_str = ''
         buf = ''
-        longest_name=0
+        longest_name = 0
         for pile in self.piles:
             if len(pile.name) > longest_name:
                 longest_name = len(pile.name)
-        
+
         for pile in self.piles:
             if len(pile.name) == longest_name:
-                buf=" "
+                buf = " "
             else:
-                buf=''
+                buf = ''
             pile_str += f"  {pile.name}  {buf}"
 
         for i in range(max_size-1, -1, -1):
             for pile in self.piles:
                 if len(pile.name) == longest_name:
-                    buf=" "*longest_name
+                    buf = " "*longest_name
                 else:
-                    buf=''
+                    buf = ''
                 if pile.size > i:
                     to_string += (f'  =  {buf}')
                 else:
@@ -145,7 +145,7 @@ class Nim:
                 if p_sum < p.size:
                     # we want to reduce this pile's size to the nim sum of its current size and the total nim sum of all pile sizes
                     rem = p.size - p_sum
-                    winning_moves.update({p:rem})
+                    winning_moves.update({p: rem})
 
             if len(winning_moves.keys()) > 0:
                 best_rem = 0
@@ -155,7 +155,7 @@ class Nim:
                         best_pile = pile
                         # the nim-sum of all pile sizes is now zero,
                         # meaning it's now impossible for the user to win this game
-                self.comp_text="It's no longer possible for you to win this game :)"
+                self.comp_text = "It's no longer possible for you to win this game :)"
                 move = best_pile.remove_items(best_rem)
                 if self.is_game_over():
                     self.winner = "You" if self.misere else "Computer"
@@ -173,6 +173,3 @@ class Nim:
             if self.is_game_over():
                 self.winner = "You" if self.misere else "Computer"
             return "Computer "+move
-
- 
-    

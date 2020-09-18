@@ -1,7 +1,6 @@
 .vscode/
 __pycache__/
 build/
-dist/
-nim_gui.spec
+*.spec
 venv/
 bash.exe.stackdump
