@@ -74,13 +74,16 @@ class Nim:
                 max_pile_size = p.size
 
         count_nonempty_piles = sum(1 for pile in self.piles if pile.size > 0)
-
+        # if there is an odd number of nonempty piles, we want to keep the number of nonempty piles odd
+        # to ensure we win
         if count_nonempty_piles % 2 == 1:
             move = max_pile.remove_items(max_pile.size-1)
             if self.is_game_over():
                 self.winner = "You"
             return "Computer "+move
         else:
+            # there is an even number of nonempty piles
+            # remove one from the game to make the number of nonempty piles odd
             move = max_pile.remove_items(max_pile.size)
             if self.is_game_over():
                 self.winner = "You"
@@ -111,19 +114,24 @@ class Nim:
                     rem = p.size - p_sum
                     winning_moves.update({p: rem})
 
-            if len(winning_moves.keys()) > 0:
-                best_rem = 0
-                for pile, rem in winning_moves.items():
-                    if rem > best_rem:
-                        best_rem = rem
-                        best_pile = pile
-                        # the nim-sum of all pile sizes is now zero,
-                        # meaning it's now impossible for the user to win this game
+            # we pick the largest from the list of winning moves
+            # to try and speed things along
+            best_rem = 0
+            for pile, rem in winning_moves.items():
+                if rem > best_rem:
+                    best_rem = rem
+                    best_pile = pile
+
+            # the nim-sum of all pile sizes is now zero,
+            # meaning it's now impossible for the user to win this game
+            move = best_pile.remove_items(best_rem)
+            if self.is_game_over():
+                self.winner = "You" if self.misere else "Computer"
+            else:
                 self.comp_text = "It's no longer possible for you to win this game :)"
-                move = best_pile.remove_items(best_rem)
-                if self.is_game_over():
-                    self.winner = "You" if self.misere else "Computer"
-                return "Computer "+move
+
+            return "Computer "+move
+
 
         else:
             # Since the nim-sum of all pile sizes is zero prior to making a move,
