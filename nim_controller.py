@@ -17,8 +17,8 @@ class NimController:
         self.num_piles = rnd.randint(2, self.max_piles)
         valid_piles = {}
         j = 0
-        # create a list of the piles and distribute one item to each pile
 
+        # create a list of the piles and distribute one item to each pile
         for i in range(0, self.num_piles):
             pile_name = string.ascii_uppercase[i % 26]
             if i >= 26:
@@ -44,8 +44,6 @@ class NimController:
         for name, size in valid_piles.items():
             self.nim.make_pile(name, size)
         
-
-
     # utility functions used by the gui
     def get_pile_dict(self):
         self.nim.index_piles_by_name()

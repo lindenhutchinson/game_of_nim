@@ -18,46 +18,37 @@ class NimGui:
         self.max_piles = IntVar(value=5)
         self.pile_buttons = []
 
-
+        # Label and input for changing the maximum number of piles that can be generated
         self.max_piles_input = Entry(self.frame, textvariable=self.max_piles, width=5)
         self.max_piles_label = Label(self.frame, text="Maximum number of randomly generated piles (2 minimum, 702 maximum)", font=(FONT, 10))
+        
         # Label for displaying information from the computer
-        self.comp_text_label = Label(
-            self.frame, textvariable=self.comp_text, font=(FONT, 10))
+        self.comp_text_label = Label(self.frame, textvariable=self.comp_text, font=(FONT, 10))
 
         # Label for displaying information about the previous move
-        self.info_label = Label(
-            self.frame, textvariable=self.move_text, font=(FONT, 12))
+        self.info_label = Label(self.frame, textvariable=self.move_text, font=(FONT, 12))
 
         # Label for displaying information about the game type
-        self.game_info_label = Label(
-            self.frame, textvariable=self.game_info, font=(FONT, 12))
+        self.game_info_label = Label(self.frame, textvariable=self.game_info, font=(FONT, 12))
 
         # Button that submits the user's move
-        self.user_move_button = Button(
-            self.frame, text="Make move", command=self.make_move, width=20, state="disabled")
+        self.user_move_button = Button(self.frame, text="Make move", command=self.make_move, width=20, state="disabled")
 
         # Button for having the computer make a move
-        self.computer_move_button = Button(
-            self.frame, text="Make computer move", command=self.make_computer_move, width=20, state="disabled")
+        self.computer_move_button = Button(self.frame, text="Make computer move", command=self.make_computer_move, width=20, state="disabled")
 
         # Integer input corresponding to the number of items to be removed from the selected pile
-        self.num_input = ttk.Combobox(
-            self.frame, textvariable=self.remove_num, width=20)
-        # num_input = Spinbox(
-        #     self.frame, textvariable=self.remove_num, from_=1, to=10, width=20)
+        self.num_input = ttk.Combobox(self.frame, textvariable=self.remove_num, width=20)
 
         # Checkbox for indicating whether the type of game should be normal or misere
-        self.misere_checkbox = Checkbutton(
-            self.frame, text="Misere game", variable=self.is_misere)
+        self.misere_checkbox = Checkbutton(self.frame, text="Misere game", variable=self.is_misere)
 
         # Button for starting a new game
-        self.new_game_button = Button(
-            self.frame, text="New Game", command=self.start_game, width=20)
+        self.new_game_button = Button(self.frame, text="New Game", command=self.start_game, width=20)
 
+        # Canvas for drawing the piles onto
         self.pile_canvas = Canvas(self.frame, width=800, height=800)
         
-
         # Display all options on the window
         self.new_game_button.place(x=10, y=10)
         self.misere_checkbox.place(x=160, y=12)
@@ -68,11 +59,10 @@ class NimGui:
         self.computer_move_button.place(x=10, y=100)
         self.user_move_button.place(x=10, y=125)
         self.num_input.place(x=10, y=150)
-
-        self.pile_canvas.place(x=200, y=125)
         self.info_label.place(x=200, y=100)
+        self.pile_canvas.place(x=200, y=125)
 
-
+    # generate a radio button for each pile in the current game
     def make_pile_buttons(self):
         if(len(self.pile_buttons) > 0):
             self.remove_pile_buttons()
@@ -107,7 +97,6 @@ class NimGui:
         self.num_input["values"] = [i for i in range(1, max_size+1)]
         if max_size > 0:
             self.num_input.current(0)
-
 
     def draw_piles(self):
         self.pile_canvas.delete('all')

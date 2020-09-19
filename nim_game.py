@@ -1,7 +1,6 @@
 import random as rnd
 import string
 
-
 class Pile:
     def __init__(self, name, size):
         self.name = name
@@ -37,7 +36,7 @@ class Nim:
     def make_pile(self, name, num_items):
         self.piles.append(Pile(name, num_items))
 
-    # calculates the nim-sum of all piles
+    # calculates the nim-sum of all pile sizes
     def get_total_nim_sum(self):
         # creates an array to hold the size of each pile
         sizes = []
@@ -82,8 +81,8 @@ class Nim:
                 self.winner = "You"
             return "Computer "+move
         else:
-            # there is an even number of nonempty piles
-            # remove one from the game to make the number of nonempty piles odd
+            # if there is an even number of nonempty piles
+            # remove all the items from a pile to make the number of nonempty piles odd
             move = max_pile.remove_items(max_pile.size)
             if self.is_game_over():
                 self.winner = "You"
@@ -95,8 +94,7 @@ class Nim:
     def make_winning_move(self):
         if self.misere:
             # the strategy to win a misere games only differs when there is exactly one pile with a size >= 2
-            piles_larger_than_2 = sum(
-                1 for pile in self.piles if pile.size > 1)
+            piles_larger_than_2 = sum(1 for pile in self.piles if pile.size > 1)
             if piles_larger_than_2 == 1:
                 return self.make_finishing_misere_move()
 
@@ -132,7 +130,6 @@ class Nim:
 
             return "Computer "+move
 
-
         else:
             # Since the nim-sum of all pile sizes is zero prior to making a move,
             # it's not possible for the computer to win unless the user makes a mistake
@@ -146,12 +143,3 @@ class Nim:
                 self.winner = "You" if self.misere else "Computer"
             return "Computer "+move
 
-
-    def calculate_winning_move(self):
-        X = self.nim_sum_of_all_pile_sizes()
-        if X != 0:
-            for p in self.piles:
-                Y = self.nim_sum_of(n_sum, p.size)
-                if Y < p.size:
-                    pile.reduce_size_to(Y)
-                    break
