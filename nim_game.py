@@ -10,7 +10,6 @@ class Pile:
     def add_items(self, num_items):
         self.size += num_items
 
-
     def remove_items(self, num_items):
         if(num_items <= self.size):
             self.size -= num_items
