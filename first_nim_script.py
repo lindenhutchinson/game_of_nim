@@ -41,7 +41,7 @@ class Pile:
         if(num_items <= len(self.items)):
             for i in range(0, num_items):
                 self.items.pop()
-            return f"Removed {num_items} items from pile {self.name}"
+            print(f"Removed {num_items} items from pile {self.name}")
         else:
             raise ValueError(
                 f"Couldn't remove {num_items} items from pile {self.name} as it only contains {len(self.items)} items")

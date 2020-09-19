@@ -145,3 +145,13 @@ class Nim:
             if self.is_game_over():
                 self.winner = "You" if self.misere else "Computer"
             return "Computer "+move
+
+
+    def calculate_winning_move(self):
+        X = self.nim_sum_of_all_pile_sizes()
+        if X != 0:
+            for p in self.piles:
+                Y = self.nim_sum_of(n_sum, p.size)
+                if Y < p.size:
+                    pile.reduce_size_to(Y)
+                    break
