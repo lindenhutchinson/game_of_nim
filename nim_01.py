@@ -1,8 +1,5 @@
-import numpy as np
 import random as rnd
-import itertools
 import string
-import sys
 
 
 def get_input_as_nonzero_int(prompt):
@@ -93,7 +90,7 @@ class Nim:
 
             to_string += '\n'
         to_string += pile_str
-        return to_string
+        print(to_string)
 
     # calculates the nim-sum of all piles
     def get_total_nim_sum(self):
@@ -156,7 +153,7 @@ class Nim:
 
         n_sum = self.get_total_nim_sum()
         if n_sum !=0:
-            print(f"Next I will look through all the piles until I find one where the nim-sum of its size and X ({n_sum}) is less than its size")
+            print(f"The total nim sum is not zero before the computer makes its move\nThis means the computer will win. It will look through all the piles until it finds one where the nim-sum of its size and X ({n_sum}) is less than its size")
 
             for p in self.piles:
                 # get the size of the current pile
@@ -175,13 +172,13 @@ class Nim:
                     # we want to reduce this pile's size to the nim sum of its current size and the total nim sum of all pile sizes
                     print(f"The winning move is reducing {p.name}'s size to nim sum of its current size and X\n{p_len} ⊕  {n_sum} = {p_sum}")
                     rem = p_len - p_sum
-                    print(f"I leave the nim-sum of all pile sizes as zero, meaning it's now impossible for you to win this game :)")
+                    print(f"The computer leaves the nim-sum of all pile sizes as zero, meaning it's now impossible for you to win this game :)")
 
                     return p.remove_items(rem)
 
         else:
-            print("Since the nim-sum of all pile sizes is not zero prior to making a move, it's not possible for me to win unless you make a mistake (no pressure)")
-            print("So instead, I'll make my move at random")
+            print("Since the nim-sum of all pile sizes is not zero prior to making a move, it's not possible for the computer to win unless you make a mistake (no pressure)")
+            print("So instead, the computer will make its move at random")
             p = rnd.choice(self.piles)
             while len(p.items) == 0:
                 p = rnd.choice(self.piles)
@@ -212,26 +209,41 @@ class Nim:
 
 class NimController:
     def __init__(self, misere):
-        self.num_piles = rnd.randint(2, 5)
-        self.items = 2*self.num_piles+1
         self.nim = Nim(misere)
 
-    # generate a random selection of piles
-    def get_random_piles(self):
-        possible_piles = list(itertools.product(
-            [i for i in range(1, self.items+1)], repeat=self.num_piles))
-        ok_piles = []
-        for p in possible_piles:
-            if sum(p) == self.items:
-                ok_piles.append(p)
-
-        return rnd.choice(ok_piles)
-
+   
     def make_piles(self):
-        piles = self.get_random_piles()
-        for i in range(0, self.num_piles):
-            self.nim.make_pile(string.ascii_uppercase[i], piles[i])
+        # randomly generate a number of piles in O(n) time
+        self.num_piles = rnd.randint(2, 5)
+        valid_piles = {}
+        j = 0
+        # create a list of the piles and distribute one item to each pile
 
+        for i in range(0, self.num_piles):
+            pile_name = string.ascii_uppercase[i % 26]
+            if i >= 26:
+                pile_name = string.ascii_uppercase[j] + \
+                    string.ascii_uppercase[i % 26]
+
+            if i % 26 == 0 and i > 26:
+                j += 1
+
+            valid_piles.update({pile_name: 1})
+
+        # since we have already distributed one to each pile, we set the distributed var equal to that amount
+        distributed = self.num_piles
+
+        random_buffer = rnd.randint(0, 10)
+        # while we haven't distributed enough items, continue distributing items to random piles
+        # we want at least 2*N+1 items distributed, but we include a buffer for some extra randomness
+        while distributed < (2*self.num_piles+1)+random_buffer:
+            pile_name = rnd.choice(list(valid_piles.keys()))
+            valid_piles[pile_name] += 1
+            distributed += 1
+
+        for name, size in valid_piles.items():
+            self.nim.make_pile(name, size)
+        
     def get_pile_dict(self):
         self.nim.index_piles_by_name()
         return self.nim.i_piles
@@ -244,22 +256,21 @@ class NimController:
         return self.nim.i_piles[pile_name].remove_items(remove_num)
 
 
-# misere = True
-# g = NimGenerator(misere)
-# g.make_piles()
-
+misere = False
+g = NimController(misere)
+g.make_piles()
 
 # In a normal game, the goal is to be the last to take an object
 # In misere play, the goal is to ensure the opponent takes the last object
 # print("You are playing a normal game (You win if you take the last object)" if not misere else "You are playing a misere game (You win if your opponent takes the last object)")
-# while(1):
-#     print("\nYour turn\n")
-#     g.nim.prompt_for_move()
-#     if(g.nim.is_game_over()):
-#         print("You lost!" if misere else "You win!")
-#         break
-#     print("\nComputer's turn\n")
-#     g.nim.make_winning_move()
-#     if(g.nim.is_game_over()):
-#         print("Computer Lost!" if misere else "Computer won")
-#         break
+while(1):
+    print("\nYour turn\n")
+    g.nim.prompt_for_move()
+    if(g.nim.is_game_over()):
+        print("You lost!" if misere else "You win!")
+        break
+    print("\nComputer's turn\n")
+    g.nim.make_winning_move()
+    if(g.nim.is_game_over()):
+        print("Computer Lost!" if misere else "Computer won")
+        break
